@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #8892b0;
+            margin-top: 8px;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px auto;
+            max-width: 500px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 50px;
+            border: 2px solid #233554;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #00d2ff;
+        }
+
+        .search-input::placeholder { color: #8892b0; }
+
+        .search-btn {
+            padding: 14px 28px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .search-btn:hover { opacity: 0.85; }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .weather-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,210,255,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .city-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .country {
+            font-size: 0.85rem;
+            color: #8892b0;
+            margin-top: 4px;
+        }
+
+        .mock-badge {
+            background: rgba(255,165,0,0.2);
+            border: 1px solid orange;
+            color: orange;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        .temperature {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+
+        .description {
+            color: #8892b0;
+            text-transform: capitalize;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #8892b0;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255,0,0,0.2);
+            border: none;
+            color: #ff6b6b;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8892b0;
+        }
+
+        .error-card {
+            background: rgba(255,0,0,0.1);
+            border: 1px solid rgba(255,0,0,0.3);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            color: #ff6b6b;
+        }
+
+        .popular-cities {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .popular-cities p {
+            color: #8892b0;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .city-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .city-tag {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .city-tag:hover {
+            background: rgba(0,210,255,0.2);
+            border-color: #00d2ff;
+        }
+
+        .env-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,210,255,0.1);
+            border: 1px solid #00d2ff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #00d2ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⛅ Weather Dashboard</h1>
+        <p>Real-time weather data powered by Kubernetes</p>
+    </div>
+
+    <div class="search-container">
+        <input
+            type="text"
+            class="search-input"
+            id="cityInput"
+            placeholder="Enter city name..."
+            onkeypress="handleKeyPress(event)"
+        />
+        <button class="search-btn" onclick="searchWeather()">Search</button>
+    </div>
+
+    <div class="popular-cities">
+        <p>Popular cities:</p>
+        <div class="city-tags">
+            <span class="city-tag" onclick="quickSearch('Hyderabad')">Hyderabad</span>
+            <span class="city-tag" onclick="quickSearch('Mumbai')">Mumbai</span>
+            <span class="city-tag" onclick="quickSearch('Bangalore')">Bangalore</span>
+            <span class="city-tag" onclick="quickSearch('Delhi')">Delhi</span>
+            <span class="city-tag" onclick="quickSearch('London')">London</span>
+            <span class="city-tag" onclick="quickSearch('New York')">New York</span>
+            <span class="city-tag" onclick="quickSearch('Tokyo')">Tokyo</span>
+            <span class="city-tag" onclick="quickSearch('Dubai')">Dubai</span>
+        </div>
+    </div>
+
+    <div id="weatherGrid" class="weather-grid"></div>
+    <div id="envBadge" class="env-badge">🚀 K8s Environment</div>
+
+    <script src="app.js"></script>
+</body>
+</html>
