@@ -1,0 +1,51 @@
+replicaCount: 1
+
+api:
+  image:
+    repository: surendrak17/weather-api
+    tag: "latest"
+    pullPolicy: Always
+  port: 8080
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+ui:
+  image:
+    repository: surendrak17/weather-ui
+    tag: "latest"
+    pullPolicy: Always
+  port: 8080
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+config:
+  appEnv: "production"
+  weatherApiUrl: "https://api.openweathermap.org/data/2.5"
+
+secret:
+  weatherApiKey: ""
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 60
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+ingress:
+  enabled: true
+  className: "nginx"
+  host: "weather.local"
