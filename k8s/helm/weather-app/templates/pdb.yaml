@@ -1,25 +1,23 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "weather-app.fullname" . }}-api-pdb
-  labels:
-    {{- include "weather-app.labels" . | nindent 4 }}
+  name: weather-app-api-pdb
+  namespace: {{ .Release.Namespace }}
 spec:
   minAvailable: {{ .Values.pdb.minAvailable }}
   selector:
     matchLabels:
-      app: {{ include "weather-app.name" . }}
+      app: weather-app
       component: api
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "weather-app.fullname" . }}-ui-pdb
-  labels:
-    {{- include "weather-app.labels" . | nindent 4 }}
+  name: weather-app-ui-pdb
+  namespace: {{ .Release.Namespace }}
 spec:
   minAvailable: {{ .Values.pdb.minAvailable }}
   selector:
     matchLabels:
-      app: {{ include "weather-app.name" . }}
+      app: weather-app
       component: ui
