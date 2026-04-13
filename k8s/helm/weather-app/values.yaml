@@ -3,7 +3,7 @@ replicaCount: 2
 api:
   image:
     repository: surendrak17/weather-api
-    tag: "latest"
+    tag: latest
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -19,7 +19,7 @@ api:
 ui:
   image:
     repository: surendrak17/weather-ui
-    tag: "latest"
+    tag: latest
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
