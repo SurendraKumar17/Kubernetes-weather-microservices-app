@@ -1,5 +1,5 @@
 // API URL — injected via K8s ConfigMap/environment
-const API_URL = window.API_URL || 'http://localhost:8080';
+const API_URL = window.API_URL || 'http://192.168.49.2:XXXXX';
 
 let weatherCards = [];
 
