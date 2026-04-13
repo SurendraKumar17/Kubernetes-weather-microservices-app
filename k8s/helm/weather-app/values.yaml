@@ -6,8 +6,9 @@ api:
     tag: latest
     pullPolicy: IfNotPresent
   service:
-    type: ClusterIP
+    type: NodePort
     port: 8080
+    nodePort: 30080
   resources:
     requests:
       cpu: 100m
