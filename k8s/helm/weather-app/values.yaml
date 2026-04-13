@@ -40,10 +40,11 @@ configmap:
 secret:
   weatherApiKey: ""
 
-hpa:
+autoscaling:
+  enabled: true
   minReplicas: 2
   maxReplicas: 10
-  cpuUtilization: 70
+  targetCPUUtilizationPercentage: 70
 
 ingress:
   enabled: true
