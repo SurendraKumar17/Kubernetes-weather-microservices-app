@@ -14,36 +14,19 @@ A production-grade weather dashboard built with microservices architecture, depl
 <img width="638" height="492" alt="image" src="https://github.com/user-attachments/assets/9238f9b5-83a5-46bc-9d84-67259e89e46e" />
 
 
-⚙️ CI/CD Pipeline
-The GitHub Actions pipeline has 4 jobs:
-Push to main
-    │
-    ▼
-┌─────────────────────┐
-│  PR Validation      │  ← Lint Dockerfiles, Scan secrets
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│  Build/Scan/Push    │  ← Build images, Trivy scan, Push to DockerHub
-│  (api + ui matrix)  │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│  GitOps Tag Update  │  ← Update image tags in values.yaml, commit back
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│  Pipeline Summary   │  ← Summary report in GitHub Actions UI
-└─────────────────────┘
-           │
-           ▼
-    ArgoCD detects change in values.yaml
-           │
-           ▼
-    Kubernetes rolls out new pods
+## ⚙️ CI/CD Pipeline
+
+The GitHub Actions pipeline has 4 jobs that run sequentially on every push to `main`:
+
+| Job | Trigger | What it does |
+|-----|---------|-------------|
+| 🔍 PR Validation | Pull Requests | Lint Dockerfiles, scan for secrets |
+| 🏗️ Build / Scan / Push | Push to main | Build API & UI images, Trivy vulnerability scan, push to DockerHub |
+| 🔄 GitOps Tag Update | After build | Update image tags in `values.yaml`, commit back to repo |
+| 📊 Pipeline Summary | Always | Summary report in GitHub Actions UI |
+
+After the pipeline completes, ArgoCD detects the tag change in `values.yaml` and automatically rolls out new pods to Kubernetes.
+
 
 📦 Helm Chart
 The Helm chart deploys the following Kubernetes resources:
