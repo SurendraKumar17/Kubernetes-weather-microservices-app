@@ -3,81 +3,16 @@
 
 A production-grade weather dashboard built with microservices architecture, deployed on Kubernetes using Helm, ArgoCD GitOps, and GitHub Actions CI/CD pipeline.
 
-Kuberneteshttps://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=whiteDockerhttps://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=whiteHelmhttps://img.shields.io/badge/Helm-0F1689?logo=helm&logoColor=whiteArgoCDhttps://img.shields.io/badge/ArgoCD-EF7B4D?logo=argo&logoColor=whiteGitHub Actionshttps://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=whitePythonhttps://img.shields.io/badge/Python-3776AB?logo=python&logoColor=whiteFastAPIhttps://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white
 
-🏗️ Architecture
-┌─────────────────────────────────────────────────────────┐
-│                    GitHub Repository                      │
-│  ┌─────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐  │
-│  │   api/  │  │   ui/    │  │  k8s/    │  │ argocd/ │  │
-│  │ FastAPI │  │  Nginx   │  │  Helm    │  │  GitOps │  │
-│  └────┬────┘  └────┬─────┘  └────┬─────┘  └────┬────┘  │
-└───────┼────────────┼─────────────┼──────────────┼───────┘
-        │            │             │              │
-        ▼            ▼             │              ▼
-┌───────────────────────┐          │     ┌────────────────┐
-│   GitHub Actions CI   │          │     │     ArgoCD     │
-│  ┌─────────────────┐  │          │     │  (GitOps Sync) │
-│  │ Lint & Scan     │  │          │     └───────┬────────┘
-│  │ Build & Push    │  │          │             │
-│  │ Update Tags     │  │          │             ▼
-│  └────────┬────────┘  │          │     ┌────────────────┐
-└───────────┼───────────┘          │     │   Kubernetes   │
-            │                      │     │   (Minikube)   │
-            ▼                      │     │                │
-    ┌───────────────┐              └────►│  weather-app   │
-    │   DockerHub   │                    │  namespace     │
-    │  weather-api  │                    │                │
-    │  weather-ui   │                    │ ┌────────────┐ │
-    └───────────────┘                    │ │ API Pods   │ │
-                                         │ │ UI Pods    │ │
-                                         │ │ ConfigMap  │ │
-                                         │ │ Secret     │ │
-                                         │ │ HPA        │ │
-                                         │ │ Ingress    │ │
-                                         │ │ PDB        │ │
-                                         │ └────────────┘ │
-                                         └────────────────┘
 
-📁 Project Structure
-Kubernetes-weather-microservices-app/
-├── api/                          # FastAPI weather backend
-│   ├── main.py                   # API endpoints
-│   ├── requirements.txt          # Python dependencies
-│   └── Dockerfile                # Multi-stage build
-├── ui/                           # Nginx frontend
-│   ├── index.html                # Weather dashboard UI
-│   ├── app.js                    # Frontend logic
-│   ├── nginx.conf                # Nginx configuration
-│   └── Dockerfile                # UI container
-├── k8s/
-│   └── helm/
-│       └── weather-app/          # Helm chart
-│           ├── Chart.yaml
-│           ├── values.yaml
-│           └── templates/
-│               ├── api-deployment.yaml
-│               ├── ui-deployment.yaml
-│               ├── api-service.yaml
-│               ├── ui-service.yaml
-│               ├── configmap.yaml
-│               ├── secret.yaml
-│               ├── hpa.yaml
-│               ├── ingress.yaml
-│               └── pdb.yaml
-├── argocd/
-│   └── weather-app.yaml          # ArgoCD Application manifest
-├── monitoring/
-│   ├── prometheus/
-│   │   └── prometheus.yml        # Prometheus scrape config
-│   └── grafana/
-│       └── weather-dashboard.json # Grafana dashboard
-└── .github/
-    └── workflows/
-        └── ci-cd.yml             # GitHub Actions pipeline
+<img width="672" height="898" alt="image" src="https://github.com/user-attachments/assets/63704afd-7347-4e6a-a566-68c863348d6d" />
 
-🚀 Tech Stack
-LayerTechnologyBackend APIPython FastAPIFrontendHTML/JS + NginxContainerizationDockerContainer RegistryDockerHubOrchestrationKubernetes (Minikube)Package ManagerHelm 3GitOpsArgoCDCI/CDGitHub ActionsMonitoringPrometheus + GrafanaData SourceOpenWeatherMap API
+
+<img width="691" height="868" alt="image" src="https://github.com/user-attachments/assets/627324fd-204e-4927-96c9-c9551445e74b" />
+
+
+<img width="638" height="492" alt="image" src="https://github.com/user-attachments/assets/9238f9b5-83a5-46bc-9d84-67259e89e46e" />
+
 
 ⚙️ CI/CD Pipeline
 The GitHub Actions pipeline has 4 jobs:
