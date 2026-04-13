@@ -7,7 +7,7 @@ api:
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
-    port: 8000
+    port: 8080
   resources:
     requests:
       cpu: 100m
